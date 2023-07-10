@@ -14,8 +14,10 @@ orig_std = sys.stdout
 def read_my_clue():
     sys.stdout = open('res.txt', 'w')
     exec(new_my_code, globals())
-    if 'input' not in my_code:
+    try:
         exec(test)
+    except:
+        pass
     sys.stdout = orig_std
     with open('res.txt') as res_code:
         return ''.join(res_code.readlines())
