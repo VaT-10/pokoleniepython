@@ -1,5 +1,5 @@
-'''Вставьте свой код в переменную my_code.
-Архив с тестами перенесите в папку с программой, и вставьте его название в переменную filname'''
+"""Вставьте свой код в переменную my_code.
+Архив с тестами перенесите в папку с программой, и вставьте его название в переменную filname"""
 
 from zipfile import ZipFile
 import sys
@@ -10,17 +10,20 @@ filename = '...'
 orig_std = sys.stdout
 
 
-
 def read_my_clue():
     sys.stdout = open('res.txt', 'w')
     exec(new_my_code, globals())
+    flag = False
     try:
-        exec(test)
+        print(list(map(str.isdigit, test.split('\n'))))
+        if not any(map(str.isdigit, test.split('\n'))):
+            exec(test)
+            flag = True
     except:
         pass
     sys.stdout = orig_std
     with open('res.txt') as res_code:
-        return ''.join(res_code.readlines())
+        return ''.join(res_code.readlines()), flag
 
 
 try:
@@ -34,11 +37,12 @@ try:
 
             with file.open(i) as f:
                 test = f.read().decode('utf-8')
-                if 'input' in my_code:
-                    for j in test.split('\n'):
-                        new_my_code = new_my_code.replace('input()', repr(j.strip('\r')), 1)
+                for j in test.split('\n'):
+                    new_my_code = new_my_code.replace('input()', repr(j.strip('\r')), 1)
             try:
-                my_clue = read_my_clue()
+                temp = read_my_clue()
+                my_clue = temp[0]
+                is_code = temp[1]
             except Exception as e:
                 sys.stdout = orig_std
                 error = str(type(e)).strip('<class \'')[:-2]
