@@ -15,7 +15,6 @@ def read_my_clue():
     exec(new_my_code, globals())
     flag = False
     try:
-        print(list(map(str.isdigit, test.split('\n'))))
         if not any(map(str.isdigit, test.split('\n'))):
             exec(test)
             flag = True
